@@ -33,12 +33,12 @@ begin
 		,cast(isnull(cs.FlagActive, 0) as bit) as FlagActive
 	into #CustomerSeasonal
 	from syn.SA_CustomerSeasonal as cs
-		join dbo.Customer as c on c.UID_DS = cs.UID_DS_Customer
+		inner join dbo.Customer as c on c.UID_DS = cs.UID_DS_Customer
 			and c.ID_mapping_DataSource = 1
-		join dbo.Season as s on s.Name = cs.Season
-		join dbo.Customer as c_dist on c_dist.UID_DS = cs.UID_DS_CustomerDistributor
+		inner join dbo.Season as s on s.Name = cs.Season
+		inner join dbo.Customer as c_dist on c_dist.UID_DS = cs.UID_DS_CustomerDistributor
 			and cd.ID_mapping_DataSource = 1
-		join syn.CustomerSystemType as cst on cs.CustomerSystemType = cst.Name
+		inner join syn.CustomerSystemType as cst on cs.CustomerSystemType = cst.Name
 	where try_cast(cs.DateBegin as date) is not null
 		and try_cast(cs.DateEnd as date) is not null
 		and try_cast(isnull(cs.FlagActive, 0) as bit) is not null
@@ -100,7 +100,6 @@ begin
 		and t.ID_CustomerSystemType <> s.ID_CustomerSystemType
 		then
 			update
-
 			set
 				ID_CustomerSystemType = s.ID_CustomerSystemType
 				,DateEnd = s.DateEnd
